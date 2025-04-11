@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regla de 3 Compuesta</title>
+    <!-- Estilo CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .header-panel {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .magnitud-panel {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .formula-box {
+            background-color: #ecf0f1;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .result-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid #2ecc71;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .notes-box {
+            background-color: #fff8e1;
+            border-left: 5px solid #f39c12;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .relation-toggle {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #edf2f7;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            padding: 15px;
+        }
+        
+        .card-header {
+            background-color: #f5f7f9;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-bottom: 1px solid #e0e0e0;
+            margin: -15px -15px 15px -15px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .col-4 {
+            flex: 0 0 33.33%;
+            max-width: 33.33%;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        
+        .col-12 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .problem-statement {
+            background-color: #f5f7f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .math-formula {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.2em;
+            text-align: center;
+        }
+        
+        .result-value {
+            font-weight: bold;
+            color: #2ecc71;
+            font-size: 1.3em;
+        }
+        
+        @media (max-width: 768px) {
+            .col-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .row {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <div class="header-panel">
+            <h1>Regla de 3 Compuesta</h1>
+            <p>Herramienta para calcular proporciones compuestas entre tres magnitudes</p>
+        </div>
+        
+        <!-- Contenido principal en tres columnas -->
+        <div class="row">
+            <!-- Primera columna: Magnitud 1 -->
+            <div class="col-4">
+                <div class="magnitud-panel">
+                    <h4 class="section-title">Primera Magnitud</h4>
+                    
+                    <!-- Tipo de relación -->
+                    <div class="relation-toggle">
+                        <label for="TRconX1">Tipo de relación con X:</label>
+                        <select id="TRconX1">
+                            <option value="DP con X">DP con X</option>
+                            <option value="IP con X">IP con X</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Selección de magnitud y unidad -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="PU1">Magnitud:</label>
+                            <select id="PU1"></select>
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="UPM1">Unidades:</label>
+                            <select id="UPM1"></select>
+                        </div>
+                    </div>
+                    
+                    <!-- Valores conocidos -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="NPU1">Valor conocido:</label>
+                            <input type="number" id="NPU1" min="0.001" max="5000" value="9" step="0.001">
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="NPU2">Valor a comparar:</label>
+                            <input type="number" id="NPU2" min="0.001" max="5000" value="15" step="0.001">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Segunda columna: Magnitud 2 -->
+            <div class="col-4">
+                <div class="magnitud-panel">
+                    <h4 class="section-title">Segunda Magnitud</h4>
+                    
+                    <!-- Tipo de relación -->
+                    <div class="relation-toggle">
+                        <label for="TRconX2">Tipo de relación con X:</label>
+                        <select id="TRconX2">
+                            <option value="DP con X">DP con X</option>
+                            <option value="IP con X">IP con X</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Selección de magnitud y unidad -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="PU2">Magnitud:</label>
+                            <select id="PU2"></select>
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="USM2">Unidades:</label>
+                            <select id="USM2"></select>
+                        </div>
+                    </div>
+                    
+                    <!-- Valores conocidos -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="NPU12">Valor conocido:</label>
+                            <input type="number" id="NPU12" min="0.001" max="5000" value="40" step="0.001">
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="NPU22">Valor a comparar:</label>
+                            <input type="number" id="NPU22" min="0.001" max="5000" value="9" step="0.001">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tercera columna: Magnitud 3 -->
+            <div class="col-4">
+                <div class="magnitud-panel">
+                    <h4 class="section-title">Tercera Magnitud</h4>
+                    
+                    <!-- Selección de magnitud y unidad -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="PU3">Magnitud:</label>
+                            <select id="PU3"></select>
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="USM3">Unidades:</label>
+                            <select id="USM3"></select>
+                        </div>
+                    </div>
+                    
+                    <!-- Valor conocido y botón de cálculo -->
+                    <div class="row">
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <label for="NPU13">Valor conocido:</label>
+                            <input type="number" id="NPU13" min="0.001" max="5000" value="200" step="0.001">
+                        </div>
+                        <div class="col-6" style="flex: 0 0 50%; max-width: 50%; padding: 0 15px; box-sizing: border-box;">
+                            <div style="margin-top: 25px;">
+                                <button id="calcular" class="btn-primary">Calcular</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Información sobre el resultado -->
+                    <div style="margin-top: 15px;">
+                        <p>El resultado (X) se calculará en las unidades seleccionadas para esta magnitud.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Panel de resultados -->
+        <div class="row">
+            <div class="col-12">
+                <div class="formula-box">
+                    <h4>Planteamiento del problema:</h4>
+                    <div id="problema" class="problem-statement"></div>
+                </div>
+                
+                <!-- Resultado -->
+                <div class="result-box">
+                    <h4>Resultado:</h4>
+                    <div id="resultado" class="card">
+                        <div id="resultado-header" class="card-header"></div>
+                        <div class="math-formula" id="formula"></div>
+                        <div class="math-formula" id="calculo"></div>
+                        <p>Resultado final: <span id="valor-final" class="result-value"></span></p>
+                    </div>
+                </div>
+                
+                <!-- Notas explicativas sobre DP -->
+                <div class="notes-box">
+                    <h4>Relación Directamente Proporcional (DP):</h4>
+                    <h4 style="color: #2980b9;">Las características de una relación directamente proporcional son:</h4>
+                    <h5>1) Si la primera magnitud aumenta, la segunda magnitud también aumenta</h5>
+                    <h5>2) Si la primera magnitud disminuye, la segunda magnitud también disminuye</h5>
+                    <h5>3) En el proceso de cálculo verificar siempre la apropiada cancelación de unidades.</h5>
+                </div>
+                
+                <!-- Notas explicativas sobre IP -->
+                <div class="notes-box">
+                    <h4>Relación Inversamente Proporcional (IP):</h4>
+                    <h4 style="color: #c0392b;">Las características de una relación inversamente proporcional son:</h4>
+                    <h5>1) Si la primera magnitud aumenta, la segunda magnitud disminuye</h5>
+                    <h5>2) Si la primera magnitud disminuye, la segunda magnitud aumenta</h5>
+                    <h5>3) En el proceso de cálculo verificar siempre la apropiada cancelación de unidades.</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Datos de magnitudes y unidades
+        const magnitudesLista = ["Longitud", "Masa", "Temperatura termodinámica", "Intensidad de corriente",
+                           "Intensidad luminosa", "Cantidad de sustancia",
+                           "Horas", "Días", "Obreros", "Dinero", "Flujo",
+                           "Libros", "Tiempo", "Grifos", "Cartas",
+                           "Secretarias", "Metros", "Media", "Volumen",
+                           "Peso", "Dosis", "Superficie", "Área",
+                           "Sombra", "Velocidad", "Hombres", "Mujeres"];
+
+        const unidadesLista = ["Kelvin", "Ampere", "Candela", "Mol", "Grifo", "metro cuadrado",
+                         "Calidad del trabajo", "Dólares", "Pesos", "Euros", "Reales", "Cantidad", "grifo",
+                         "Milímetro", "Centímetro", "decímetro", "Metro", "Decámetro", "Hectómetro", "Kilómetro",
+                         "Miligramo", "Centigramo", "Decigramo", "Gramo", "Decagramo", "Hectógramo", "Kilogramo",
+                         "Mililitro", "Centilitro", "Decilitro", "Litro", "Decalitro", "Hectolitro", "Kilolitro",
+                         "Segundo", "Minuto", "Hora", "Día", "Semana", "Mes", "Año"];
+
+        // Mapeo de magnitudes a unidades sugeridas
+        const unidadesPorMagnitud = {
+            "Longitud": ["Milímetro", "Centímetro", "decímetro", "Metro", "Decámetro", "Hectómetro", "Kilómetro"],
+            "Masa": ["Miligramo", "Centigramo", "Decigramo", "Gramo", "Decagramo", "Hectógramo", "Kilogramo"],
+            "Temperatura termodinámica": ["Kelvin"],
+            "Intensidad de corriente": ["Ampere"],
+            "Intensidad luminosa": ["Candela"],
+            "Cantidad de sustancia": ["Mol"],
+            "Horas": ["Hora"],
+            "Días": ["Día"],
+            "Obreros": ["Cantidad"],
+            "Dinero": ["Dólares", "Pesos", "Euros", "Reales"],
+            "Flujo": ["Litro", "Mililitro", "Grifo"],
+            "Libros": ["Cantidad"],
+            "Tiempo": ["Segundo", "Minuto", "Hora", "Día", "Semana", "Mes", "Año"],
+            "Grifos": ["grifo"],
+            "Cartas": ["Cantidad"],
+            "Secretarias": ["Cantidad"],
+            "Metros": ["Metro"],
+            "Media": ["Cantidad"],
+            "Volumen": ["Mililitro", "Centilitro", "Decilitro", "Litro", "Decalitro", "Hectolitro", "Kilolitro"],
+            "Peso": ["Gramo", "Kilogramo"],
+            "Dosis": ["Mililitro", "Gramo"],
+            "Superficie": ["metro cuadrado"],
+            "Área": ["metro cuadrado"],
+            "Sombra": ["Metro"],
+            "Velocidad": ["Metro", "Kilómetro"],
+            "Hombres": ["Cantidad"],
+            "Mujeres": ["Cantidad"]
+        };
+
+        // Función para llenar un select con opciones
+        function llenarSelect(selectId, opciones, valorPorDefecto = null) {
+            const select = document.getElementById(selectId);
+            select.innerHTML = '';
+            
+            opciones.forEach(opcion => {
+                const elemento = document.createElement('option');
+                elemento.value = opcion;
+                elemento.textContent = opcion;
+                select.appendChild(elemento);
+            });
+            
+            if (valorPorDefecto && opciones.includes(valorPorDefecto)) {
+                select.value = valorPorDefecto;
+            }
+        }
+
+        // Función para actualizar las unidades según la magnitud seleccionada
+        function actualizarUnidades(idMagnitud, idUnidad, valorPorDefecto = null) {
+            const magnitud = document.getElementById(idMagnitud).value;
+            let opcionesUnidades = unidadesLista;
+            
+            if (unidadesPorMagnitud[magnitud]) {
+                opcionesUnidades = unidadesPorMagnitud[magnitud];
+            }
+            
+            llenarSelect(idUnidad, opcionesUnidades, valorPorDefecto || opcionesUnidades[0]);
+        }
+
+        // Inicializar selects de magnitudes y unidades
+        document.addEventListener('DOMContentLoaded', function() {
+            // Llenar selects de magnitudes
+            llenarSelect('PU1', magnitudesLista, 'Flujo');
+            llenarSelect('PU2', magnitudesLista, 'Tiempo');
+            llenarSelect('PU3', magnitudesLista, 'Volumen');
+
+            // Inicializar unidades
+            actualizarUnidades('PU1', 'UPM1', 'Grifo');
+            actualizarUnidades('PU2', 'USM2', 'Hora');
+            actualizarUnidades('PU3', 'USM3', 'Litro');
+
+            // Asignar eventos para actualizar unidades cuando cambia la magnitud
+            document.getElementById('PU1').addEventListener('change', function() {
+                actualizarUnidades('PU1', 'UPM1');
+            });
+
+            document.getElementById('PU2').addEventListener('change', function() {
+                actualizarUnidades('PU2', 'USM2');
+            });
+
+            document.getElementById('PU3').addEventListener('change', function() {
+                actualizarUnidades('PU3', 'USM3');
+            });
+
+            // Mostrar planteamiento inicial
+            actualizarPlanteamiento();
+            
+            // Asignar evento al botón calcular
+            document.getElementById('calcular').addEventListener('click', calcularResultado);
+        });
+
+        // Función para actualizar el planteamiento del problema
+        function actualizarPlanteamiento() {
+            const TRconX1 = document.getElementById('TRconX1').value;
+            const TRconX2 = document.getElementById('TRconX2').value;
+            const PU1 = document.getElementById('PU1').value;
+            const PU2 = document.getElementById('PU2').value;
+            const PU3 = document.getElementById('PU3').value;
+            const UPM1 = document.getElementById('UPM1').value;
+            const USM2 = document.getElementById('USM2').value;
+            const USM3 = document.getElementById('USM3').value;
+            const NPU1 = document.getElementById('NPU1').value;
+            const NPU2 = document.getElementById('NPU2').value;
+            const NPU12 = document.getElementById('NPU12').value;
+            const NPU22 = document.getElementById('NPU22').value;
+            const NPU13 = document.getElementById('NPU13').value;
+            
+            // Color según tipo de relación
+            const colorRel1 = TRconX1 === "DP con X" ? "#2ecc71" : "#e74c3c";
+            const colorRel2 = TRconX2 === "DP con X" ? "#2ecc71" : "#e74c3c";
+            
+            let planteamiento = `
+                <table style="width: 100%; margin-bottom: 15px;">
+                    <tr>
+                        <td style="width: 33%; text-align: center; font-weight: bold; color: ${colorRel1};">${TRconX1}</td>
+                        <td style="width: 33%; text-align: center; font-weight: bold; color: ${colorRel2};">${TRconX2}</td>
+                        <td style="width: 33%; text-align: center;"></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding-top: 10px;">Primera Magnitud</td>
+                        <td style="text-align: center; padding-top: 10px;">Segunda Magnitud</td>
+                        <td style="text-align: center; padding-top: 10px;">Tercera Magnitud</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding: 10px 0;">${PU1}</td>
+                        <td style="text-align: center; padding: 10px 0;">${PU2}</td>
+                        <td style="text-align: center; padding: 10px 0;">${PU3}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding: 5px 0;">${NPU1} ${UPM1}</td>
+                        <td style="text-align: center; padding: 5px 0;">${NPU12} ${USM2}</td>
+                        <td style="text-align: center; padding: 5px 0;">${NPU13} ${USM3}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center; padding: 5px 0;">${NPU2} ${UPM1}</td>
+                        <td style="text-align: center; padding: 5px 0;">${NPU22} ${USM2}</td>
+                        <td style="text-align: center; padding: 5px 0;">X ${USM3}</td>
+                    </tr>
+                </table>`;
+            
+            document.getElementById('problema').innerHTML = planteamiento;
+        }
+
+        // Función para calcular el resultado
+        function calcularResultado() {
+            // Actualizar el planteamiento primero
+            actualizarPlanteamiento();
+            
+            // Obtener todos los valores necesarios
+            const TRconX1 = document.getElementById('TRconX1').value;
+            const TRconX2 = document.getElementById('TRconX2').value;
+            const PU1 = document.getElementById('PU1').value;
+            const PU2 = document.getElementById('PU2').value;
+            const PU3 = document.getElementById('PU3').value;
+            const UPM1 = document.getElementById('UPM1').value;
+            const USM2 = document.getElementById('USM2').value;
+            const USM3 = document.getElementById('USM3').value;
+            const NPU1 = parseFloat(document.getElementById('NPU1').value);
+            const NPU2 = parseFloat(document.getElementById('NPU2').value);
+            const NPU12 = parseFloat(document.getElementById('NPU12').value);
+            const NPU22 = parseFloat(document.getElementById('NPU22').value);
+            const NPU13 = parseFloat(document.getElementById('NPU13').value);
+            
+            let resultado = 0;
+            let formula = '';
+            let calculo = '';
+            let tituloResultado = '';
+            
+            // Calcular según el tipo de relación
+            if (TRconX1 === "DP con X" && TRconX2 === "DP con X") {
+                resultado = (NPU2 * NPU22 * NPU13) / (NPU1 * NPU12);
+                
+                formula = `${NPU13} / X = ${NPU1} / ${NPU2} × ${NPU12} / ${NPU22}`;
+                
+                calculo = `X = (${NPU2} ${UPM1} × ${NPU22} ${USM2} × ${NPU13} ${USM3}) / (${NPU1} ${UPM1} × ${NPU12} ${USM2})`;
+                
+                tituloResultado = "Proporción Directa & Proporción Directa";
+            } 
+            else if (TRconX1 === "IP con X" && TRconX2 === "DP con X") {
+                resultado = (NPU1 * NPU22 * NPU13) / (NPU2 * NPU12);
+                
+                formula = `${NPU13} / X = ${NPU2} / ${NPU1} × ${NPU12} / ${NPU22}`;
+                
+                calculo = `X = (${NPU1} ${UPM1} × ${NPU22} ${USM2} × ${NPU13} ${USM3}) / (${NPU2} ${UPM1} × ${NPU12} ${USM2})`;
+                
+                tituloResultado = "Proporción Inversa & Proporción Directa";
+            }
+            else if (TRconX1 === "IP con X" && TRconX2 === "IP con X") {
+                resultado = (NPU1 * NPU12 * NPU13) / (NPU2 * NPU22);
+                
+                formula = `${NPU13} / X = ${NPU2} / ${NPU1} × ${NPU22} / ${NPU12}`;
+                
+                calculo = `X = (${NPU1} ${UPM1} × ${NPU12} ${USM2} × ${NPU13} ${USM3}) / (${NPU2} ${UPM1} × ${NPU22} ${USM2})`;
+                
+                tituloResultado = "Proporción Inversa & Proporción Inversa";
+            }
+            else if (TRconX1 === "DP con X" && TRconX2 === "IP con X") {
+                resultado = (NPU2 * NPU12 * NPU13) / (NPU1 * NPU22);
+                
+                formula = `${NPU13} / X = ${NPU1} / ${NPU2} × ${NPU22} / ${NPU12}`;
+                
+                calculo = `X = (${NPU2} ${UPM1} × ${NPU12} ${USM2} × ${NPU13} ${USM3}) / (${NPU1} ${UPM1} × ${NPU22} ${USM2})`;
+                
+                tituloResultado = "Proporción Directa & Proporción Inversa";
+            }
+            
+            // Redondear a 3 decimales para números no enteros
+            if (resultado % 1 !== 0) {
+                resultado = Math.round(resultado * 1000) / 1000;
+            }
+            
+            // Mostrar el resultado
+            document.getElementById('resultado-header').textContent = tituloResultado;
+            document.getElementById('formula').textContent = formula;
+            document.getElementById('calculo').textContent = calculo;
+            document.getElementById('valor-final').textContent = `${resultado} ${USM3}`;
+        }
+    </script>
+</body>
+</html>
